@@ -40,25 +40,47 @@ var questions = [
 ];
 var questionsLeft = questions.length;
 
-var createAnswers = function(answersBody, question) {
-    var orderedAnswers = [question.correct, question.incorrect1, question.incorrect2, question.incorrect3];
+var randomizeAnswers = function(question) {
+    var orderedAnswers = 
+    [
+        {
+            answer: question.correct,
+            isCorrect: true
+        },
+        {
+            answer: question.incorrect1,
+            isCorrect: false
+        },
+        {
+            answer: question.incorrect2,
+            isCorrect: false
+        },
+        {
+            answer: question.incorrect3,
+            isCorrect: false
+        }
+    ];
     var orderedInitialLength = orderedAnswers.length;
     var unorderedAnswers = [];
 
     while (unorderedAnswers.length < orderedInitialLength) {
-        console.log(orderedAnswers);
-        console.log(unorderedAnswers);
         var index = Math.floor(Math.random() * orderedAnswers.length);
         unorderedAnswers.push(orderedAnswers[index]);
         orderedAnswers.splice(index,1);
-        console.log(orderedAnswers);
-        console.log(unorderedAnswers);
+    }
+    return unorderedAnswers;
+}
+
+var createAnswers = function(answersBody, question) {
+    var answers = randomizeAnswers(question);
+    console.log(answers);
+
+    for (let index = 0; index < answers.length; index++) {
+        var answerBtnEl = document.createElement("button");
+        answerBtnEl.className = "answer-btn";
+        answerBtnEl.setAttribute("id", `${index}`);
     }
     
-    for (let i = 0; i < unorderedAnswers.length; i++) {
-        var 
-        
-    }
 }
 
 var createQuestions = function(question) {
