@@ -283,7 +283,7 @@ var saveHighScore = function(target) {
     }
 }
 
-var checkCorrect = function(event) {
+var bodyBtnHandler = function(event) {
     if (event.target.matches(".answer-btn")) {
        if (event.target.matches("#true.answer-btn")) {
             answersCorrect++;
@@ -331,13 +331,13 @@ var runGame = function() {
     }
 };
 
-var startButtonHandler = function() {
+var startBtnHandler = function() {
     removeChildren(quizBodyEl);
     timer = setInterval(changeTimer, 1000);
     runGame();
 };
 
-var showHighScores = function() {
+var highScoreHandler = function() {
     var previousName = localStorage.getItem("player");
     var previousScore = localStorage.getItem("score");
     var isHighScoreShowing = document.querySelector("#score-card");
@@ -367,8 +367,8 @@ var showHighScores = function() {
     }
 }
 
-startBtnEl.addEventListener("click", startButtonHandler);
+startBtnEl.addEventListener("click", startBtnHandler);
 
-quizBodyEl.addEventListener("click", checkCorrect);
+quizBodyEl.addEventListener("click", bodyBtnHandler);
 
-highScoresEl.addEventListener("click", showHighScores);
+highScoresEl.addEventListener("click", highScoreHandler);
