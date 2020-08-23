@@ -1,6 +1,9 @@
 var timeLeft = 70;
 var quizBodyEl = document.querySelector(".quiz-body");
 var startBtnEl = document.querySelector("#ready-btn");
+var answersCorrect = 0;
+var iterator = 0;
+var wasAnswered = true;
 var questions = [
     {
         q: "0What is JavaScript?",
@@ -73,14 +76,17 @@ var randomizeAnswers = function(question) {
 
 var createAnswers = function(answersBody, question) {
     var answers = randomizeAnswers(question);
-    console.log(answers);
 
     for (let index = 0; index < answers.length; index++) {
+        
         var answerBtnEl = document.createElement("button");
         answerBtnEl.className = "answer-btn";
-        answerBtnEl.setAttribute("id", `${index}`);
+        answerBtnEl.textContent = answers[index].answer;
+        if (answers[index].isCorrect) {
+            answerBtnEl.setAttribute("id", `${true}`);
+        }
+        answersBody.appendChild(answerBtnEl);
     }
-    
 }
 
 var createQuestions = function(question) {
@@ -99,12 +105,42 @@ var createQuestions = function(question) {
         createAnswers(answersEl, question);
 }
 
+var removeQuestions = function() {
+    while (quizBodyEl.firstChild) {
+        quizBodyEl.removeChild(quizBodyEl.firstChild);
+    }
+}
+
+var checkCorrect = function(event) {
+    if (event.target.matches(".answer-btn")) {
+       if (event.target.matches("#true.answer-btn")) {
+            answersCorrect++;
+            alert("you got this correct");
+        } else {
+            alert("you got this incorrect");
+        }
+        removeQuestions();
+        wasAnswered = true;
+        runGame();
+    }
+}
+
 var runGame = function() {
+    if (timeLeft > 0 && iterator < questions.length) {
+        if (wasAnswered) {
+            wasAnswered = false;
+            createQuestions(questions[iterator]);
+            iterator++;
+        }
+    } else if (timeLeft <= 0) {
+        alert(`You have run out of time. Your final score is ${answersCorrect}`)
+    }
+};
+var startButtonHandler = function() {
     startBtnEl.remove();
-    //for (var i = 0; timeLeft > 0 && i < questions.length; i++) {
-        //createQuestions(questions[i]);
-    //}
-    createQuestions(questions[0]);
+    runGame();
 };
 
-startBtnEl.addEventListener("click", runGame);
+startBtnEl.addEventListener("click", startButtonHandler);
+
+quizBodyEl.addEventListener("click", checkCorrect);
