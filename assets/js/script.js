@@ -2,6 +2,7 @@ var timeLeft = 70;
 var quizBodyEl = document.querySelector(".quiz-body");
 var startBtnEl = document.querySelector("#ready-btn");
 var timerEl = document.querySelector(".time-left");
+var highScoresEl = document.querySelector(".high-score");
 var timer;
 var score = 0;
 var answersCorrect = 0;
@@ -240,16 +241,23 @@ var createQuestions = function(question) {
         createAnswers(answersEl, question);
 }
 
-var removeQuestions = function() {
-    while (quizBodyEl.firstChild) {
-        quizBodyEl.removeChild(quizBodyEl.firstChild);
+var removeChildren = function(parent) {
+    while (parent.firstChild) {
+        parent.removeChild(quizBodyEl.firstChild);
     }
 }
 
 var gameOver = function() {
-    var player = prompt("What is your name?");
-    localStorage.setItem("player", player);
-    localStorage.setItem("score", score);
+
+    var previousScore = localStorage.getItem("score");
+
+    if(!previousScore || previousScore < score) { 
+        var player = prompt("What is your name?");
+        localStorage.setItem("player", player);
+        localStorage.setItem("score", score);
+    } else {
+        alert(`you did not beat the high score ${previousScore}`);
+    }
 }
 
 var checkCorrect = function(event) {
@@ -257,7 +265,7 @@ var checkCorrect = function(event) {
        if (event.target.matches("#true.answer-btn")) {
             answersCorrect++;
         }
-        removeQuestions();
+        removeChildren(quizBodyEl);
         wasAnswered = true;
         runGame();
     }
@@ -266,13 +274,13 @@ var changeTimer = function() {
     timerEl.textContent = timeLeft;
     if (!timeLeft) {
         clearInterval(timer);
-        removeQuestions();
+        removeChildren(quizBodyEl);
         score = answersCorrect;
         alert(`You have run out of time! Your final score: ${score}`);
+        gameOver();
         timerEl.textContent = "";
     }
     timeLeft--;
-    console.log(timeLeft);
 };
 
 var runGame = function() {
@@ -287,19 +295,52 @@ var runGame = function() {
         else if (iterator >= questions.length) {
             clearInterval(timer);
             timerEl.textContent = "";
-            var score = answersCorrect + timeLeft;
+            score = answersCorrect + timeLeft;
             alert(`You have completed the quiz! congratulations! Your final score: ${score}`);
+            gameOver();
             return true;
         }
     }
 };
 
 var startButtonHandler = function() {
-    removeQuestions();
+    removeChildren(quizBodyEl);
     timer = setInterval(changeTimer, 1000);
     runGame();
 };
 
+var showHighScores = function() {
+    var previousName = localStorage.getItem("player");
+    var previousScore = localStorage.getItem("score");
+    var isHighScoreShowing = document.querySelector("#score-card");
+    console.dir(isHighScoreShowing);
+    if (!isHighScoreShowing) {
+        if (previousScore || previousName) {
+
+            var scoreCardEl = document.createElement("div");
+            scoreCardEl.className = "score-card";
+            scoreCardEl.setAttribute("id", "score-card");
+            quizBodyEl.appendChild(scoreCardEl);
+    
+            var nameEl = document.createElement("h1");
+            nameEl.textContent = previousName;
+            
+            scoreCardEl.appendChild(nameEl);
+    
+            var scoreEl = document.createElement("h2");
+            scoreEl.textContent = "high score: " + previousScore;
+    
+            scoreCardEl.appendChild(nameEl);
+            scoreCardEl.appendChild(scoreEl);
+        } else {
+            alert("There are no previous high scores.");
+            return false;
+        }
+    }
+}
+
 startBtnEl.addEventListener("click", startButtonHandler);
 
 quizBodyEl.addEventListener("click", checkCorrect);
+
+highScoresEl.addEventListener("click", showHighScores);
