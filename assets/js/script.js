@@ -14,14 +14,14 @@ var questions = [
         correct: "JavaScript's syntax is loosely based on Java's",
         incorrect1: "JavaScript is a stripped-down version of Java",
         incorrect2: "They both originated on the island of Java",
-        incorrect3: "None of the above"
+        incorrect3: "None of these answers"
     },
     {
         q: "When a user views a page containing a JavaScript program, which machine actually executes the script?",
         correct: "The User's machine running a Web browser",
         incorrect1: "The Web server",
         incorrect2: "A central machine deep within Netscape's corporate offices",
-        incorrect3: "None of the above"
+        incorrect3: "None of these answers"
     },
     {
         q: "______ JavaScript is also called client-side JavaScript.",
@@ -42,7 +42,7 @@ var questions = [
         correct: "Storing numbers, dates, or other values",
         incorrect1: "Varying randomly",
         incorrect2: "Causing high-school algebra flashbacks",
-        incorrect3: "None of the above"
+        incorrect3: "None of these answers"
     },
     {
         q: "_____ JavaScript statements embedded in an HTML page can respond to user events such as mouse-clicks, form input, and page navigation.",
@@ -56,28 +56,28 @@ var questions = [
         correct: "The </script>",
         incorrect1: "The <script>",
         incorrect2: "The END statement",
-        incorrect3: "None of the above"
+        incorrect3: "None of these answers"
     },
     {
         q: "Which of the following can't be done with client-side JavaScript?",
         correct: "Storing the form's contents to a database file on the server",
         incorrect1: "Validating a form",
         incorrect2: "Sending a form's contents by email",
-        incorrect3: "None of the above"
+        incorrect3: "None of these answers"
     },
     {
         q: "Which of the following are capabilities of functions in JavaScript?",
         correct: "Accept parameters",
         incorrect1: "Return a value",
         incorrect2: "Accept parameters and Return a value",
-        incorrect3: "None of the above"
+        incorrect3: "None of these answers"
     },
     {
         q: "Which of the following is not a valid JavaScript variable name?",
         correct: "2names",
         incorrect1: "_first_and_last_names",
         incorrect2: "FirstAndLast",
-        incorrect3: "None of the above"
+        incorrect3: "None of these answers"
     },
     {
         q: "______ tag is an extension to HTML that can enclose any number of JavaScript statements.",
@@ -91,14 +91,14 @@ var questions = [
         correct: "The number of milliseconds since January 1st, 1970",
         incorrect1: "The number of days since January 1st, 1900",
         incorrect2: "The number of seconds since Netscape's public stock offering.",
-        incorrect3: "None of the above"
+        incorrect3: "None of these answers"
     },
     {
         q: "Which of the following attribute can hold the JavaScript version?",
         correct: "LANGUAGE",
         incorrect1: "SCRIPT",
         incorrect2: "VERSION",
-        incorrect3: "None of the above"
+        incorrect3: "None of these answers"
     },
     {
         q: "What is the correct JavaScript syntax to write 'Hello World'?",
@@ -119,21 +119,21 @@ var questions = [
         correct: "Client-side image maps",
         incorrect1: "Server-side image maps",
         incorrect2: "Server-side image maps and Client-side image maps",
-        incorrect3: "None of the above"
+        incorrect3: "None of these answers"
     },
     {
         q: "Which of the following navigator object properties is the same in both   Netscape and IE?",
         correct: "navigator.appCodeName",
         incorrect1: "navigator.appName",
         incorrect2: "navigator.appVersion",
-        incorrect3: "None of the above"
+        incorrect3: "None of these answers"
     },
     {
         q: "What does the <noscript> tag do?",
         correct: "Enclose text to be displayed by non-JavaScript browsers.",
         incorrect1: "Prevents scripts on the page from executing.",
         incorrect2: "Describes certain low-budget movies.",
-        incorrect3: "None of the above"
+        incorrect3: "None of these answers"
     },
     {
         q: "JavaScript entities start with _______ and end with _________.",
@@ -217,7 +217,7 @@ var createAnswers = function(answersBody, question) {
         
         var answerBtnEl = document.createElement("button");
         answerBtnEl.className = "answer-btn";
-        answerBtnEl.textContent = answers[index].answer;
+        answerBtnEl.textContent = (index + 1)+ ". " + answers[index].answer;
         if (answers[index].isCorrect) {
             answerBtnEl.setAttribute("id", `${true}`);
         }
