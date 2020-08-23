@@ -10,7 +10,7 @@ var iterator = 0;
 var wasAnswered = true;
 var questions = [
     {
-        q: "Why so JavaScript and Java have similar name?",
+        q: "Why do JavaScript and Java have similar name?",
         correct: "JavaScript's syntax is loosely based on Java's",
         incorrect1: "JavaScript is a stripped-down version of Java",
         incorrect2: "They both originated on the island of Java",
@@ -210,40 +210,45 @@ var randomizeAnswers = function(question) {
     return unorderedAnswers;
 }
 
-var createAnswers = function(answersBody, question) {
+var createAnswers = function(answersBodyEl, question) {
     var answers = randomizeAnswers(question);
 
     for (let index = 0; index < answers.length; index++) {
-        
+        var buttonHolderEl = document.createElement("div");
+        buttonHolderEl.className = "button-holder";
+        answersBodyEl.appendChild(buttonHolderEl);
         var answerBtnEl = document.createElement("button");
         answerBtnEl.className = "answer-btn";
         answerBtnEl.textContent = (index + 1)+ ". " + answers[index].answer;
         if (answers[index].isCorrect) {
             answerBtnEl.setAttribute("id", `${true}`);
         }
-        answersBody.appendChild(answerBtnEl);
+        buttonHolderEl.appendChild(answerBtnEl);
     }
 }
 
 var createQuestions = function(question) {
 
+        var quizBoxEl = document.createElement("div");
+        quizBoxEl.className = "quiz-box";
+        quizBodyEl.appendChild(quizBoxEl);
         var questionTitleEl = document.createElement("h1");
         
         questionTitleEl.className ="question-title";
-        questionTitleEl.textContent = question.q;
-        quizBodyEl.appendChild(questionTitleEl);
+        questionTitleEl.textContent = `${iterator + 1}. ${question.q}`;
+        quizBoxEl.appendChild(questionTitleEl);
 
         var answersEl = document.createElement("div");
 
         answersEl.className = "question-answers";
-        quizBodyEl.appendChild(answersEl);
+        quizBoxEl.appendChild(answersEl);
 
         createAnswers(answersEl, question);
 }
 
 var removeChildren = function(parent) {
     while (parent.firstChild) {
-        parent.removeChild(quizBodyEl.firstChild);
+        parent.removeChild(parent.firstChild);
     }
 }
 
