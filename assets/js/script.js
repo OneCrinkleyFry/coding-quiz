@@ -248,31 +248,59 @@ var removeChildren = function(parent) {
 }
 
 var gameOver = function() {
+    removeChildren(quizBodyEl);
 
-    var previousScore = localStorage.getItem("score");
+    var highScoreSaveEl = document.createElement("form");
+    highScoreSaveEl.className = "high-score-form";
+    quizBodyEl.appendChild(highScoreSaveEl);
 
-    if(!previousScore || previousScore < score) { 
-        var player = prompt("What is your name?");
-        localStorage.setItem("player", player);
-        localStorage.setItem("score", score);
+    var scoreLabelEl = document.createElement("label");
+    scoreLabelEl.setAttribute("for", "player-name");
+    scoreLabelEl.textContent = "Enter your initials here:";
+    highScoreSaveEl.appendChild(scoreLabelEl);
+
+    var scoreInputEl = document.createElement("input");
+    scoreInputEl.type = "text";
+    scoreInputEl.className = "high-scorer"
+    scoreInputEl.setAttribute("id", "player-name");
+    scoreInputEl.name = "player-name";
+    highScoreSaveEl.appendChild(scoreInputEl);
+
+    var scoreBtnEl = document.createElement("button");
+    scoreBtnEl.className = "score-submit";
+    scoreBtnEl.textContent = "Save Score!"
+    highScoreSaveEl.appendChild(scoreBtnEl);
+}
+
+var saveHighScore = function(target) {
+    console.log(target);
+    var playerName = target.closest(".high-score-form").querySelector(".high-scorer").value;
+    if (!playerName) {
+        alert("No valid input. Try again!");
     } else {
-        alert(`you did not beat the high score ${previousScore}`);
+        localStorage.setItem("player", playerName);
+        localStorage.setItem("score", score);
     }
 }
 
-var checkCorrect = function(event) {
+var bodyBtnHandler = function(event) {
     if (event.target.matches(".answer-btn")) {
        if (event.target.matches("#true.answer-btn")) {
             answersCorrect++;
         }
+        else {
+            timeLeft -= 5;
+        }
         removeChildren(quizBodyEl);
         wasAnswered = true;
         runGame();
+    } else if (event.target.matches(".score-submit")) {
+        saveHighScore(event.target);
     }
 }
 var changeTimer = function() {
     timerEl.textContent = timeLeft;
-    if (!timeLeft) {
+    if (!timeLeft || timeLeft < 0) {
         clearInterval(timer);
         removeChildren(quizBodyEl);
         score = answersCorrect;
@@ -303,13 +331,13 @@ var runGame = function() {
     }
 };
 
-var startButtonHandler = function() {
+var startBtnHandler = function() {
     removeChildren(quizBodyEl);
     timer = setInterval(changeTimer, 1000);
     runGame();
 };
 
-var showHighScores = function() {
+var highScoreHandler = function() {
     var previousName = localStorage.getItem("player");
     var previousScore = localStorage.getItem("score");
     var isHighScoreShowing = document.querySelector("#score-card");
@@ -339,8 +367,8 @@ var showHighScores = function() {
     }
 }
 
-startBtnEl.addEventListener("click", startButtonHandler);
+startBtnEl.addEventListener("click", startBtnHandler);
 
-quizBodyEl.addEventListener("click", checkCorrect);
+quizBodyEl.addEventListener("click", bodyBtnHandler);
 
-highScoresEl.addEventListener("click", showHighScores);
+highScoresEl.addEventListener("click", highScoreHandler);
