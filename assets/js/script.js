@@ -3,6 +3,7 @@ var quizBodyEl = document.querySelector(".quiz-body");
 var startBtnEl = document.querySelector("#ready-btn");
 var timerEl = document.querySelector(".time-left");
 var timer;
+var score = 0;
 var answersCorrect = 0;
 var iterator = 0;
 var wasAnswered = true;
@@ -245,6 +246,12 @@ var removeQuestions = function() {
     }
 }
 
+var gameOver = function() {
+    var player = prompt("What is your name?");
+    localStorage.setItem("player", player);
+    localStorage.setItem("score", score);
+}
+
 var checkCorrect = function(event) {
     if (event.target.matches(".answer-btn")) {
        if (event.target.matches("#true.answer-btn")) {
@@ -260,7 +267,8 @@ var changeTimer = function() {
     if (!timeLeft) {
         clearInterval(timer);
         removeQuestions();
-        alert(`You have run out of time! Your final score: ${answersCorrect}`);
+        score = answersCorrect;
+        alert(`You have run out of time! Your final score: ${score}`);
         timerEl.textContent = "";
     }
     timeLeft--;
@@ -279,14 +287,15 @@ var runGame = function() {
         else if (iterator >= questions.length) {
             clearInterval(timer);
             timerEl.textContent = "";
-            alert(`You have completed the quiz! congratulations! Your final score: ${answersCorrect + timeLeft}`);
+            var score = answersCorrect + timeLeft;
+            alert(`You have completed the quiz! congratulations! Your final score: ${score}`);
             return true;
         }
     }
 };
 
 var startButtonHandler = function() {
-    startBtnEl.remove();
+    removeQuestions();
     timer = setInterval(changeTimer, 1000);
     runGame();
 };
