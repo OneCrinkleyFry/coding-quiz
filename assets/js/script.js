@@ -1,6 +1,8 @@
 var timeLeft = 70;
 var quizBodyEl = document.querySelector(".quiz-body");
 var startBtnEl = document.querySelector("#ready-btn");
+var timerEl = document.querySelector(".time-left");
+var timer;
 var answersCorrect = 0;
 var iterator = 0;
 var wasAnswered = true;
@@ -124,20 +126,39 @@ var checkCorrect = function(event) {
         runGame();
     }
 }
+var changeTimer = function() {
+    timerEl.textContent = timeLeft;
+    if (!timeLeft) {
+        clearInterval(timer);
+        removeQuestions();
+        alert(`You have run out of time! Your final score: ${answersCorrect}`);
+        timerEl.textContent = "";
+    }
+    timeLeft--;
+    console.log(timeLeft);
+};
 
 var runGame = function() {
-    if (timeLeft > 0 && iterator < questions.length) {
-        if (wasAnswered) {
-            wasAnswered = false;
-            createQuestions(questions[iterator]);
-            iterator++;
+    if (timeLeft > 0) {
+        if (iterator < questions.length) {
+            if (wasAnswered) {
+                wasAnswered = false;
+                createQuestions(questions[iterator]);
+                iterator++;
+            }
+        } 
+        else if (iterator >= questions.length) {
+            clearInterval(timer);
+            timerEl.textContent = "";
+            alert(`You have completed the quiz! congratulations! Your final score: ${answersCorrect + timeLeft}`);
+            return true;
         }
-    } else if (timeLeft <= 0) {
-        alert(`You have run out of time. Your final score is ${answersCorrect}`)
     }
 };
+
 var startButtonHandler = function() {
     startBtnEl.remove();
+    timer = setInterval(changeTimer, 1000);
     runGame();
 };
 
