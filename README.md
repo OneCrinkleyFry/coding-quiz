@@ -13,4 +13,8 @@ To assess how well I am understanding javascript principles.
 
 ### [Where can you find the project](sithSlave.github.io/coding-quiz/)
 
+### Screenshots
+#### [Quiz](./assets/images/PageScreenshot.png)
+#### [Save Form](./assets/images/SaveForm.png)
+#### [High Scores](./assets/images/HighScoreList.png)
 
