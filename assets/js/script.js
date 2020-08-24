@@ -1,4 +1,4 @@
-var timeLeft = 500;
+var timeLeft = 180;
 var quizBodyEl = document.querySelector(".quiz-body");
 var startBtnEl = document.querySelector("#ready-btn");
 var timerEl = document.querySelector(".time-left");
